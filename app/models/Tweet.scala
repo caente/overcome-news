@@ -9,7 +9,7 @@ import reactivemongo.api.Cursor
 import reactivemongo.core.commands.Count
 import play.modules.reactivemongo.json.collection.JSONCollection
 
-import birdwatchUtils.Mongo
+import utils.Mongo
 import play.api.libs.iteratee.Enumerator
 
 /** Simple Tweet representation */

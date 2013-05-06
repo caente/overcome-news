@@ -1,4 +1,4 @@
-package birdwatchUtils
+package utils
 
 object Calc {
   

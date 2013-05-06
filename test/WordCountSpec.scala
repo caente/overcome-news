@@ -54,11 +54,11 @@ class WordCountSpec extends FeatureSpec with GivenWhenThen {
     val testIteratee = WordCount.wordCountIteratee(interceptStep)
     enumerator |>>> testIteratee
 
-    testChannel.push(Tweet(1L, "User", "ABCa abca abca abcd abcd ab a accb", 0, 0, "", "", None, DateTime.now, None))
-    testChannel.push(Tweet(2L, "User", "abcA @abca abca abcd abcd ab a accb", 0, 0, "", "", None, DateTime.now, None))
-    testChannel.push(Tweet(3L, "User", "abca abca. abca ABCD abcd ab a accb", 0, 0, "", "", None, DateTime.now, None))
-    testChannel.push(Tweet(4L, "User", "abca aBca! abca abcd abcd ab a accb", 0, 0, "", "", None, DateTime.now, None))
-    testChannel.push(Tweet(5L, "User", "a a a #accb accb", 0, 0, "", "", None, DateTime.now, None))
+    testChannel.push(Tweet(1L, "User", "ABCa abca abca abcd abcd ab a accb", 0, 0, "", DateTime.now))
+    testChannel.push(Tweet(2L, "User", "abcA @abca abca abcd abcd ab a accb", 0, 0, "", DateTime.now))
+    testChannel.push(Tweet(3L, "User", "abca abca. abca ABCD abcd ab a accb", 0, 0, "", DateTime.now))
+    testChannel.push(Tweet(4L, "User", "abca aBca! abca abcd abcd ab a accb", 0, 0, "", DateTime.now))
+    testChannel.push(Tweet(5L, "User", "a a a #accb accb", 0, 0, "", DateTime.now))
 
     scenario("Iteratee wordMap count for 'abca' == 12") { assert(testMap("abca") === 12) }
     scenario("Iteratee wordMap count for 'abcd' == 8") { assert(testMap("abcd") === 8) }
@@ -68,7 +68,7 @@ class WordCountSpec extends FeatureSpec with GivenWhenThen {
 
   feature("Character Count and Word Count in Tweet") {
 
-    val t = Tweet(6L, "User", "ABCa abca abca abcd abcd ab a accb", 0, 0, "", "", None, DateTime.now, None)
+    val t = Tweet(6L, "User", "ABCa abca abca abcd abcd ab a accb", 0, 0, "", DateTime.now)
     val t2 = WordCount.wordsChars(t)
 
     scenario("Character count is 34") { assert(t2.charCount === 34) }

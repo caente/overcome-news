@@ -1,6 +1,6 @@
 import actors.TwitterClient.AddTopic
 import play.api.GlobalSettings
-import birdwatchUtils.Mongo
+import utils.Mongo
 import actors.ActorStage
 
 object Global extends GlobalSettings {

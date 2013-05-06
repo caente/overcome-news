@@ -6,7 +6,7 @@ import play.api.libs.functional.syntax._
 import play.api.libs.json._
 import play.api.libs.json.Reads.jodaDateReads
 
-import birdwatchUtils.TimeInterval
+import utils.TimeInterval
 
 object TweetImplicits {
   implicit val DefaultJodaDateReads = jodaDateReads("EEE MMM dd HH:mm:ss Z YYYY")

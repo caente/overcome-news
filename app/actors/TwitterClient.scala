@@ -15,7 +15,7 @@ import org.joda.time.DateTime
 import scala.concurrent.duration._
 
 import models._
-import birdwatchUtils._
+import utils._
 import models.TweetImplicits._
 
 /** Actors related to image processing */
