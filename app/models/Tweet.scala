@@ -26,11 +26,6 @@ case class Tweet(
 /** holds the state for GUI updates (list of recent tweets and a word frequency map), used for Json serialization */
 case class TweetState(
   tweetList: List[Tweet],
-  wordMap: Map[String, Int],
-  charCountMean: Double,
-  charCountStdDev: Double,
-  wordCountMean: Double,
-  wordCountStdDev: Double,
   n: Int
 )
 

@@ -30,8 +30,11 @@ object TwitterClient {
 
   /** Protocol for Twitter Client actors */
   case class AddTopic(topic: String)
+
   case class RemoveTopic(topic: String)
+
   case object CheckStatus
+
   case object TweetReceived
 
   val topics: scala.collection.mutable.HashSet[String] = new scala.collection.mutable.HashSet[String]()
@@ -61,7 +64,11 @@ object TwitterClient {
       case _: Exception => Restart
     }
     override val log = Logging(context.system, this)
-    override def preStart() { println("TwitterClient Supervisor starting") }
+
+    override def preStart() {
+      println("TwitterClient Supervisor starting")
+    }
+
     override def preRestart(reason: Throwable, message: Option[Any]) {
       log.error(reason, "Restarting due to [{}] when processing [{}]", reason.getMessage, message.getOrElse(""))
     }
@@ -70,12 +77,14 @@ object TwitterClient {
 
     var lastTweetReceived: Long = 0L
     var tweetCount = 0
-    Tweet.count.map(c => tweetCount += c) // only ask MongoDB for collection size once
+    Tweet.count.map(c => tweetCount += c)
+
+    // only ask MongoDB for collection size once
 
     /** Receives control messages for starting / restarting supervised client and adding or removing topics */
     def receive = {
 
-      case AddTopic(topic)  => {
+      case AddTopic(topic) => {
         topics.add(topic)
         twitterClient ! Kill
       }
@@ -88,7 +97,7 @@ object TwitterClient {
       case TweetReceived => {
         lastTweetReceived = DateTime.now.getMillis
         tweetCount += 1
-        println("Tweets collected: " + tweetCount)  // use UI update instead
+        println("Tweets collected: " + tweetCount) // use UI update instead
       }
 
       case CheckStatus => {
@@ -111,8 +120,9 @@ object TwitterClient {
         log.error(reason, "Restarting due to [{}] when processing [{}]", reason.getMessage, message.getOrElse(""))
       }
 
-      val url = "https://stream.twitter.com/1.1/statuses/filter.json?track="
-      val conn = WS.url(url + TwitterClient.topics.mkString("%2C").replace(" ", "%20"))
+      //      val url = "https://stream.twitter.com/1.1/statuses/filter.json?track="
+      val url = "https://userstream.twitter.com/2/user.json"
+      val conn = WS.url(url/* + TwitterClient.topics.mkString("%2C").replace(" ", "%20")*/)
         .withTimeout(-1)
         .sign(OAuthCalculator(consumerKey, accessToken))
         .get(_ => TwitterClient.tweetIteratee)
@@ -123,5 +133,7 @@ object TwitterClient {
         case _ =>
       }
     }
+
   }
+
 }

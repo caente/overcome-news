@@ -86,7 +86,7 @@ object WordCount {
   *  @param    n max length of list to keep as iteratee state
   *  @return   Iteratee[Tweet, List[Tweet]], accumulating tweetList from tweetChannel
   */
-  def tweetListIteratee(f: List[Tweet] => Unit, tweetList: List[Tweet], n: Int): Iteratee[Tweet, List[Tweet]]  = 
+  def tweetListIteratee(f: List[Tweet] => Unit, tweetList: List[Tweet], n: Int): Iteratee[Tweet, List[Tweet]]  =
     Iteratee.fold[Tweet, List[Tweet]] (tweetList) {
       case (xs, x) => {
        val newTweetList = (x :: xs) take n

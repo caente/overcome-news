@@ -4,7 +4,7 @@ import akka.actor.{ Actor, Props}
 
 import play.api.libs.json.{JsValue, JsError, JsSuccess, Json}
 import play.api.libs.concurrent.Execution.Implicits.defaultContext
-import play.api.libs.iteratee.Concurrent
+import play.api.libs.iteratee.{Iteratee, Concurrent}
 import play.api.mvc.{Action, Controller}
 
 import actors._
@@ -35,12 +35,7 @@ object Twitter extends Controller {
         * @return   Unit, cannot interfere with the accumulator inside the Iteratee
         */
       def interceptTweetList(tweetList: List[Tweet]) {
-        val (charCountMean, charCountStdDev) = Calc.stdDev(tweetList.map(t => t.charCount))
-        val (wordCountMean, wordCountStdDev) = Calc.stdDev(tweetList.map(t => t.wordCount))
-
-        val tweetState = TweetState(tweetList.take(1), WordCount.topN(tweetList, 250), charCountMean, charCountStdDev,
-          wordCountMean, wordCountStdDev, tweetList.size)
-
+        val tweetState = TweetState(tweetList.take(1),tweetList.size)
         wsOutChannel.push(Json.toJson(tweetState))
       }
 
@@ -48,7 +43,7 @@ object Twitter extends Controller {
       val (enumerator, tweetChannel) = Concurrent.broadcast[Tweet]
 
       /** Iteratee processing Tweets from tweetChannel, accumulating a rolling window of tweets */
-      val tweetListIteratee = WordCount.tweetListIteratee(interceptTweetList, List[Tweet](), 1000)
+      val tweetListIteratee = WordCount.tweetListIteratee(interceptTweetList, List[Tweet](), 30)
       enumerator |>>> tweetListIteratee // attach tweetListIteratee to enumerator
 
       /** Actor for subscribing to eventStream. Pushes received tweets into TweetChannel for
@@ -61,10 +56,10 @@ object Twitter extends Controller {
       ActorStage.system.eventStream.subscribe(subscriber, classOf[Tweet]) // subscribe to incoming tweets
 
       /** Pre-load the last 500 tweets through WebSocket connection  */
-      Tweet.jsonLatestN(500).map {
+      Tweet.jsonLatestN(10).map {
         tweets => tweets.reverse.foreach {
           x => TweetReads.reads(x) match {
-            case JsSuccess(t: Tweet, _) => tweetChannel.push(WordCount.wordsChars(t)) // word and char count for each t
+            case JsSuccess(t: Tweet, _) => tweetChannel.push(t)// tweetChannel.push(WordCount.wordsChars(t)) // word and char count for each t
             case JsError(msg) => println(x)
           }
         }
