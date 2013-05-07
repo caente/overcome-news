@@ -33,11 +33,12 @@ case class TweetState(
 
 /** Data Access Object for Tweets*/
 object Tweet {
-  def rawTweets: JSONCollection = ReactiveMongoPlugin.db.collection[JSONCollection]("rawTweets")
+  def db = ReactiveMongoPlugin.db
+  def rawTweets: JSONCollection = db.collection[JSONCollection]("rawTweets")
   def insertJson(json: JsValue) = rawTweets.insert[JsValue](json)
 
   /** get collection size from MongoDB (fast) */
-  def count: Future[Int] = ReactiveMongoPlugin.db.command(Count("rawTweets"))
+  def count: Future[Int] = db.command(Count("rawTweets"))
 
   /** Query latest tweets as List */
   def jsonLatestN(n: Int): Future[List[JsObject]] = {
