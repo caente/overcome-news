@@ -11,6 +11,8 @@ import play.modules.reactivemongo.json.collection.JSONCollection
 
 import utils.Mongo
 import play.api.libs.iteratee.Enumerator
+import play.modules.reactivemongo.ReactiveMongoPlugin
+import play.api.Play.current
 
 /** Simple Tweet representation */
 case class Tweet(
@@ -31,11 +33,11 @@ case class TweetState(
 
 /** Data Access Object for Tweets*/
 object Tweet {
-  def rawTweets: JSONCollection = Mongo.db.collection[JSONCollection]("rawTweets")
+  def rawTweets: JSONCollection = ReactiveMongoPlugin.db.collection[JSONCollection]("rawTweets")
   def insertJson(json: JsValue) = rawTweets.insert[JsValue](json)
 
   /** get collection size from MongoDB (fast) */
-  def count: Future[Int] = Mongo.db.command(Count("rawTweets"))
+  def count: Future[Int] = ReactiveMongoPlugin.db.command(Count("rawTweets"))
 
   /** Query latest tweets as List */
   def jsonLatestN(n: Int): Future[List[JsObject]] = {
