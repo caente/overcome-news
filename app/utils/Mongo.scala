@@ -8,6 +8,7 @@ import play.api.libs.concurrent.Execution.Implicits.defaultContext
 import reactivemongo.api.gridfs.GridFS
 import play.modules.reactivemongo.json.collection.JSONCollection
 import play.modules.reactivemongo.ReactiveMongoPlugin
+import play.api.Play.current
 
 /** Mongo connection object */
 object Mongo {
