@@ -76,8 +76,8 @@ object TwitterClient {
     val twitterClient = context.actorOf(Props(new TwitterClient()), "TwitterClient")
 
     var lastTweetReceived: Long = 0L
-    var tweetCount = 0
-    Tweet.count.map(c => tweetCount += c)
+//    var tweetCount = 0
+//    Tweet.count.map(c => tweetCount += c)
 
     // only ask MongoDB for collection size once
 
@@ -96,8 +96,8 @@ object TwitterClient {
 
       case TweetReceived => {
         lastTweetReceived = DateTime.now.getMillis
-        tweetCount += 1
-        println("Tweets collected: " + tweetCount) // use UI update instead
+//        tweetCount += 1
+//        println("Tweets collected: " + tweetCount) // use UI update instead
       }
 
       case CheckStatus => {
@@ -122,7 +122,7 @@ object TwitterClient {
 
       //      val url = "https://stream.twitter.com/1.1/statuses/filter.json?track="
       val url = "https://userstream.twitter.com/2/user.json"
-      val conn = WS.url(url/* + TwitterClient.topics.mkString("%2C").replace(" ", "%20")*/)
+      val conn = WS.url(url /* + TwitterClient.topics.mkString("%2C").replace(" ", "%20")*/)
         .withTimeout(-1)
         .sign(OAuthCalculator(consumerKey, accessToken))
         .get(_ => TwitterClient.tweetIteratee)

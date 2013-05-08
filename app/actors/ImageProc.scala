@@ -40,7 +40,7 @@ object ImageProc {
     
     override val log = Logging(context.system, this)
      
-    override def preStart() { log.debug("Starting") }
+    override def preStart() { println("Starting") }
 
     override def preRestart(reason: Throwable, message: Option[Any]) {
       log.error(reason, "Restarting due to [{}] when processing [{}]", reason.getMessage, message.getOrElse(""))
@@ -60,7 +60,7 @@ object ImageProc {
         retrievalActor ! Proc(sender, t)        // forward tweet to retrieval actor (child)
       }
       case DoneProc(p: Proc) => {
-        log.debug("DONE: " + p.t.profile_image_url)
+       println  ("DONE: " + p.t.profile_image_url)
         
         eventStream.publish(DoneProc(p))
         eventStream.publish(p.t)
@@ -74,7 +74,7 @@ object ImageProc {
   class RetrievalActor(next: Option[ActorRef]) extends Actor with ActorLogging {
     override val log = Logging(context.system, this)
      
-    override def preStart() { log.debug("Starting") }
+    override def preStart() { println("Starting") }
    
     override def preRestart(reason: Throwable, message: Option[Any]) {
       log.error(reason, "Restarting due to [{}] when processing [{}]", reason.getMessage, message.getOrElse(""))
@@ -85,7 +85,7 @@ object ImageProc {
     */
     def receive = {
       case p: Proc => {
-        log.debug("RetrievalActor received request for " + p.t.profile_image_url)
+        println("RetrievalActor received request for " + p.t.profile_image_url)
         
         WS.url("http://" + p.t.profile_image_url).get().map {
           r => next.foreach(_ ! (p, r.getAHCResponse.getResponseBodyAsBytes))
@@ -112,7 +112,7 @@ object ImageProc {
   class ConversionActor extends Actor with ActorLogging {
     override val log = Logging(context.system, this)
      
-    override def preStart() { log.debug("Starting") }
+    override def preStart() { println("Starting") }
     
     override def preRestart(reason: Throwable, message: Option[Any]) {
       log.error(reason, "Restarting due to [{}] when processing [{}]", reason.getMessage, message.getOrElse(""))
@@ -121,7 +121,7 @@ object ImageProc {
     /** Converts and downsizes received Array[Byte] into PNG of dimensions 150*150px, writes image to GridFS */
     def receive = {
       case (p: Proc, data: Array[Byte]) =>
-        log.debug("Received Image " + p.t.profile_image_url)
+        println("Received Image " + p.t.profile_image_url)
         val contentType = "image/png"
         val fileName = p.t.tweet_id + ".png"
 

@@ -39,7 +39,7 @@ object Twitter extends Controller {
         wsOutChannel.push(Json.toJson(tweetState))
       }
 
-      /** Creates enumerator and channel for Tweets through Concurrent factory object */
+      /** Creates enumerator and channel for Tweets through Concurrent  factory object */
       val (enumerator, tweetChannel) = Concurrent.broadcast[Tweet]
 
       /** Iteratee processing Tweets from tweetChannel, accumulating a rolling window of tweets */

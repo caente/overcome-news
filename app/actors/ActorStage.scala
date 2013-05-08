@@ -9,7 +9,7 @@ import scala.concurrent.duration._
 object ActorStage {
   
   /** BirdWatch actor system */
-  val system = ActorSystem("BirdWatch")
+  val system = ActorSystem("OvercomeNews")
 
   /** Supervisor for Image Retrieval / Image Processing */
   val imgSupervisor = system.actorOf(Props(new ImageProc.Supervisor(system.eventStream)), "ImgSupervisor")

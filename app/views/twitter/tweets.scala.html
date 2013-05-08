@@ -2,50 +2,31 @@
 
 @mainEmpty("Overcome the news") {
 
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <!--suppress HtmlUnknownTag -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<!--suppress HtmlUnknownTag -->
 
-  <div id="header">
-      <h1>Overcome the news</h1>
-  </div>
+<div id="header">
+    <h1>Overcome the news</h1>
+</div>
 
 
-  <div id="tweets">
+<div id="tweets">
     <ul data-bind="foreach: tweets">
-      <li>
-          <div class="tweetlist">
-              <span>
-                  <img data-bind="attr: { src: img_url }" />
-              </span>
-              <div class="screen_name" data-bind="text: screen_name"></div>
-              &nbsp;&nbsp;&nbsp;&nbsp;
-              <div class="timeInterval" data-bind="text: timeAgo"></div><br />
-              <div class="tweettext">
-                  <span data-bind="text: text"><br />
+        <li>
+            <div class="tweetlist">
+                <!--<span>-->
+                <!--<img data-bind="attr: { src: img_url }" />-->
+                <!--</span>-->
+                <div class="screen_name" data-bind="text: screen_name"></div>
+                &nbsp;&nbsp;&nbsp;&nbsp;
+                <div class="timeInterval" data-bind="text: timeAgo"></div><br />
+                <div class="tweettext">
+                  <span data-bind="text: text"><br/>
                   </span>
-              </div>
-          </div>
-      </li>
+                </div>
+            </div>
+        </li>
     </ul>
-  </div>
-
-
-
-  <script type="text/javascript">
-
-   $(function() {
-     var feed = new EventSource('/tweetFeed');
-     feed.addEventListener('message', handler, false);
-     // Overall viewmodel for this screen, along with initial state
-     var TweetsViewModel = function() { this.tweets = ko.observableArray(); };
-     var viewModel = new TweetsViewModel();
-     ko.applyBindings(viewModel);
-     function handler(msg){
-       var data = JSON.parse(msg.data);
-       viewModel.tweets.unshift(data.tweetList[0]);
-     }
-   })
-   </script>
-
+</div>
 
 }
