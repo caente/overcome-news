@@ -56,10 +56,12 @@ object Twitter extends Controller {
       ActorStage.system.eventStream.subscribe(subscriber, classOf[Tweet]) // subscribe to incoming tweets
 
       /** Pre-load the last 500 tweets through WebSocket connection  */
-      Tweet.jsonLatestN(10).map {
+      Tweet.jsonLatestN(4).map {
         tweets => tweets.reverse.foreach {
           x => TweetReads.reads(x) match {
-            case JsSuccess(t: Tweet, _) => tweetChannel.push(t)// tweetChannel.push(WordCount.wordsChars(t)) // word and char count for each t
+            case JsSuccess(t: Tweet, _) =>
+                tweetChannel.push(WordCount.wordsChars(t)) // word and char count for each t
+                println("pushing: " + t.text)
             case JsError(msg) => println(x)
           }
         }

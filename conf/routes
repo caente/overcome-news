@@ -17,7 +17,7 @@ GET /tweets/replay/:results    controllers.Twitter.tweetReplay(results: Int, del
 
 GET /images/:filename         controllers.Images.getImage(filename: String)
 
-GET /status                   controllers.WebSockets.statusPage()
-GET /statusFeed               controllers.WebSockets.statusFeed()
+#GET /status                   controllers.WebSockets.statusPage()
+#GET /statusFeed               controllers.WebSockets.statusFeed()
 
 GET /assets/*file             controllers.Assets.at(path="/public", file)

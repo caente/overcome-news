@@ -8,15 +8,25 @@
 <div id="header">
     <h1>Overcome the news</h1>
 </div>
+<div id="page">
 
+    <ul id="ticker" class="ticker" data-bind="foreach: tweets">
+        <li>
+            <strong><span class="screen_name" data-bind="text: screen_name"></span></strong> - <span data-bind="text: text"></span>
+        </li>
+    </ul>
+
+</div>
+
+<!--
 
 <div id="tweets">
     <ul data-bind="foreach: tweets">
         <li>
             <div class="tweetlist">
-                <!--<span>-->
-                <!--<img data-bind="attr: { src: img_url }" />-->
-                <!--</span>-->
+                &lt;!&ndash;<span>&ndash;&gt;
+&lt;!&ndash;<img data-bind="attr: { src: img_url }" />&ndash;&gt;
+&lt;!&ndash;</span>&ndash;&gt;
                 <div class="screen_name" data-bind="text: screen_name"></div>
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 <div class="timeInterval" data-bind="text: timeAgo"></div><br />
@@ -27,6 +37,6 @@
             </div>
         </li>
     </ul>
-</div>
+</div>-->
 
 }
