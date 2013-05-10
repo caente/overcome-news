@@ -1,8 +1,5 @@
 $ ->
-
-
-
-    class TweetsViewModel
+  class TweetsViewModel
          tweets: ko.observableArray()
     viewModel = new TweetsViewModel()
     ko.applyBindings viewModel
