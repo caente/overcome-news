@@ -1,4 +1,4 @@
-package com.whatson
+package com.overinfo
 
 import org.specs2.mutable.Specification
 import spray.testkit.Specs2RouteTest

@@ -1,0 +1,25 @@
+new=7
+how	5
+#abcworldnew=5
+year=5
+get=4
+g=4
+know=4
+christie=4
+fire=4
+look=4
+million=3
+case=3
+home=3
+space=3
+chris=3
+gay=3
+day=3
+busi=3
+sit=3
+song=3
+shoot=3
+happen=2
+seen=2
+virginia=2
+market=2

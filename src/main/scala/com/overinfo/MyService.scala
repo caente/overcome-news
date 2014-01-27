@@ -1,4 +1,4 @@
-package com.whatson
+package com.overinfo
 
 import akka.actor.Actor
 import spray.routing._
