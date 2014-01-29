@@ -1,4 +1,4 @@
-package com.overinfo
+package com.overinfo.services
 
 import akka.actor.Actor
 import spray.routing._

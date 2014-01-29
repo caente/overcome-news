@@ -4,8 +4,7 @@ import akka.testkit.{TestProbe, ImplicitSender, TestKit}
 import akka.actor.{Actor, Props, ActorSystem}
 import org.specs2.mutable.SpecificationLike
 import org.specs2.time.NoTimeConversions
-import com.overinfo.PersistenceActor
-import com.overinfo.processors.TwitterSampler
+import com.overinfo.processors.{PersistenceActor, TwitterSampler}
 import com.overinfo.models.TwitterAccountModel
 import akka.event.LoggingReceive
 

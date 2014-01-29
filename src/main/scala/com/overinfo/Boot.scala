@@ -5,6 +5,7 @@ import akka.io.IO
 import spray.can.Http
 import com.overinfo.models.TwitterAccountModel
 import com.overinfo.streams.TwitterStreamer
+import com.overinfo.services.TwitterActor
 
 object Boot extends App {
 

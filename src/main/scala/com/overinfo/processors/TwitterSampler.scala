@@ -3,7 +3,7 @@ package com.overinfo.processors
 import akka.actor.{ActorRef, Actor}
 import akka.event.LoggingReceive
 import scala.io.Source
-import com.overinfo.PersistenceActor
+import com.overinfo.processors.PersistenceActor
 
 /**
  * Created: Miguel A. Iglesias

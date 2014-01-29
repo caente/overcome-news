@@ -15,7 +15,7 @@ object WordsModel {
 
   case class Updated(updated:DateTime)
 
-  case class TweetWord(source: SourcesModel.Source, word: String, count: Int, text: String, updated: List[Updated])
+  case class TweetWord(source: SourcesModel.Source, word: String, count: Int, text: String, history: List[Updated])
 
   RegisterJodaTimeConversionHelpers()
 
@@ -56,7 +56,7 @@ object WordsModel {
             tweet.word,
             tweet.count + otherTweet.count,
             newerTweet.text,
-            newerTweet.updated
+            newerTweet.history
           )
         }
       }

@@ -1,6 +1,8 @@
-package com.overinfo
+package com.overinfo.processors
 
 import akka.actor.Props
+import com.overinfo.processors.PersistenceActor
+import com.overinfo.streams
 
 /**
  * Created: Miguel A. Iglesias

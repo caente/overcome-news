@@ -6,7 +6,7 @@ import akka.testkit.{TestProbe, ImplicitSender, TestKit}
 import org.specs2.mutable.SpecificationLike
 import org.specs2.time.NoTimeConversions
 import scala.io.Source
-import com.overinfo.PersistenceActor
+import com.overinfo.processors.PersistenceActor
 
 /**
  * Created: Miguel A. Iglesias

@@ -1,8 +1,7 @@
 package com.overinfo.streams
 
 import akka.actor.Props
-import com.overinfo.processors.TwitterSampler
-import com.overinfo.Persistence
+import com.overinfo.processors.{Persistence, TwitterSampler}
 
 /**
  * Created: Miguel A. Iglesias
