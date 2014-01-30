@@ -1,12 +1,9 @@
 package com.overinfo.processors
 
 import akka.actor.Actor
-import com.overinfo.processors.TwitterSampler
 import akka.event.LoggingReceive
 import scala.concurrent.Future
-import com.mongodb.casbah.commons.conversions.scala.RegisterJodaTimeConversionHelpers
 import com.overinfo.models
-import com.overinfo.models.WordsModel
 
 /**
  * Created: Miguel A. Iglesias

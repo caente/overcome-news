@@ -11,7 +11,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
  */
 object SourcesModel {
 
-  case class Source(name: String, image_url: String, screen_name: String, twitter_id: Long)
+  case class  Source(name: String, image_url: String, screen_name: String, twitter_id: Long)
 
   def updateSources(sources: List[User]): Future[List[Long]] = Future {
     sources map {

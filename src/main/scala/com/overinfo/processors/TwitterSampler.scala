@@ -3,7 +3,6 @@ package com.overinfo.processors
 import akka.actor.{ActorRef, Actor}
 import akka.event.LoggingReceive
 import scala.io.Source
-import com.overinfo.processors.PersistenceActor
 
 /**
  * Created: Miguel A. Iglesias
@@ -73,7 +72,7 @@ class TwitterSampler(persistence: ActorRef) extends Actor {
   def receive = LoggingReceive {
     case tweet@TwitterSampler.Tweet(origin, text) =>
       val sample = parseSample(origin, text)
-      persistence ! PersistenceActor.Tweet(tweet,sample)
+      persistence ! PersistenceActor.Tweet(tweet, sample)
   }
 
 }

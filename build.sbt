@@ -26,7 +26,8 @@ libraryDependencies ++= {
     "org.scalatest" % "scalatest_2.10" % "2.0.M5b" % "test",
     "com.netflix.rxjava" % "rxjava-scala" % "0.16.1",
     "org.mongodb" %% "casbah" % "2.6.3",
-    "com.novus" %% "salat" % "1.9.2"
+    "com.novus" %% "salat" % "1.9.2",
+    "io.spray" %%  "spray-json" % "1.2.5"
   )
 }
 

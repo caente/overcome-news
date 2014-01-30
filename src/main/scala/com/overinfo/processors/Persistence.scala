@@ -1,7 +1,6 @@
 package com.overinfo.processors
 
 import akka.actor.Props
-import com.overinfo.processors.PersistenceActor
 import com.overinfo.streams
 
 /**
@@ -9,5 +8,5 @@ import com.overinfo.streams
  * Date: 1/23/14
  */
 trait Persistence {
- def persistence(account_id:Long) = streams.system.actorOf(Props(new PersistenceActor),name = s"account-$account_id-persistence")
+  def persistence(account_id: Long) = streams.system.actorOf(Props(new PersistenceActor), name = s"account-$account_id-persistence")
 }

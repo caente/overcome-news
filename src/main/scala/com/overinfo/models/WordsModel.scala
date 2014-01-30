@@ -6,6 +6,7 @@ import com.mongodb.casbah.commons.conversions.scala.RegisterJodaTimeConversionHe
 import com.overinfo.processors.TwitterSampler
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
+import com.overinfo.mergers.WordMerger.MergedWord
 
 /**
  * Created: Miguel A. Iglesias
@@ -15,7 +16,15 @@ object WordsModel {
 
   case class Updated(updated:DateTime)
 
-  case class TweetWord(source: SourcesModel.Source, word: String, count: Int, text: String, history: List[Updated])
+  case class TweetWord(source: SourcesModel.Source, word: String, count: Int, text: String, history: List[Updated]){
+    override def equals(obj: scala.Any): Boolean = obj match {
+      case w:MergedWord => w.word == this.word
+      case t:TweetWord => t.word == this.word
+      case _ => false
+    }
+
+    override def hashCode(): Int = this.word.toUpperCase.hashCode
+  }
 
   RegisterJodaTimeConversionHelpers()
 

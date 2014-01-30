@@ -5,7 +5,7 @@ import akka.io.IO
 import spray.can.Http
 import com.overinfo.models.TwitterAccountModel
 import com.overinfo.streams.TwitterStreamer
-import com.overinfo.services.TwitterActor
+import com.overinfo.services.{WordsService, TwitterActor}
 
 object Boot extends App {
 
@@ -14,13 +14,13 @@ object Boot extends App {
   implicit val system = ActorSystem("overcome-news")
 
   // create and start our service actor
-  val service = system.actorOf(Props[TwitterActor], "twitter-service")
+  val service = system.actorOf(Props[WordsService], "twitter-service")
 
-  TwitterAccountModel.getTwitterAccounts map {
-    twitterAccount =>
-      val accountStream = system.actorOf(Props(new TwitterStreamer), s"account-${twitterAccount.account_id}-stream")
-      accountStream ! TwitterStreamer.Start(twitterAccount)
-  }
+//  TwitterAccountModel.getTwitterAccounts map {
+//    twitterAccount =>
+//      val accountStream = system.actorOf(Props(new TwitterStreamer), s"account-${twitterAccount.account_id}-stream")
+//      accountStream ! TwitterStreamer.Start(twitterAccount)
+//  }
   // start a new HTTP server on port 8080 with our service actor as the handler
-  IO(Http) ! Http.Bind(service, interface = "localhost", port = 8080)
+  IO(Http) ! Http.Bind(service, interface = "localhost", port = 3000)
 }
