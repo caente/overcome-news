@@ -23,22 +23,25 @@ class WordsService extends Actor with WordRoutes {
 }
 
 
-trait WordRoutes extends HttpService {
-
+trait WordRoutes extends HttpService  {
   import com.overinfo.mergers.WordMerger.jsonProtocols._
   import spray.httpx.SprayJsonSupport._
   import spray.httpx.marshalling._
   import spray.httpx.unmarshalling._
   import spray.json._
 
-  val wordOperations =
+
+  val wordOperations = respondWithHeaders(corsHeaders:_*){
+      options {
+        complete("ok")
+      } ~
     path("words" / "intersect") {
-      post {
-        entity(as[Sources]) {
-          sources =>
-            intersect(sources)
+        post {
+          entity(as[Sources]) {
+            sources =>
+              intersect(sources)
+          }
         }
-      }
     } ~
       path("words" / "diff") {
         post {
@@ -48,16 +51,19 @@ trait WordRoutes extends HttpService {
           }
         }
       }
+  }
 
 
   def intersect(sources: Sources)(ctx: RequestContext): Unit = {
     val sender = actorRefFactory.actorOf(Props(new Actor {
       def receive = LoggingReceive {
         case words: MergedWords =>
-          ctx.complete(words)
-      } andThen(_ => context.stop(self))
+          val js = marshal(words)
+          println(js)
+          ctx.complete(js)
+      } andThen (_ => context.stop(self))
     }), name = s"waiter")
-    actorRefFactory.actorOf(Props(new WordIntersect(sender)),name  = s"intersect") ! sources
+    actorRefFactory.actorOf(Props(new WordIntersect(sender)), name = s"intersect") ! sources
   }
 
   def diff(sources: Sources)(ctx: RequestContext): Unit = {
@@ -65,8 +71,8 @@ trait WordRoutes extends HttpService {
       def receive = LoggingReceive {
         case words: MergedWords =>
           ctx.complete(words)
-      } andThen(_ => context.stop(self))
+      } andThen (_ => context.stop(self))
     }), name = s"waiter")
-    actorRefFactory.actorOf(Props(new WordDiff(sender)),name  = s"intersect") ! sources
+    actorRefFactory.actorOf(Props(new WordDiff(sender)), name = s"diff") ! sources
   }
 }

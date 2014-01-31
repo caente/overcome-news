@@ -50,10 +50,10 @@ object WordMerger {
   trait MergeOperation {
 
     def newest(w1: MergedWord, w2: TweetWord) =
-      if (w1.updated.compareTo(w2.history.head.updated) > 0)
+      if (w1.updated.compareTo(w2.history.head) > 0)
         w1
       else
-        MergedWord(w2.source, w2.word, w2.count, w2.text, w2.history.head.updated)
+        MergedWord(w2.source, w2.word, w2.count, w2.text, w2.history.head)
 
     def selectDate(w1: MergedWord, w2: TweetWord): DateTime = newest(w1, w2).updated
 
@@ -124,11 +124,11 @@ abstract class WordMerger(parent: ActorRef) extends Actor with Mergers with Merg
     case WordMerger.Words(source, tweets) =>
       val merged = merge(mergedWords, tweets)
       context become merging(sources - source, merged)
-  } andThen (_ => println(s"$sources - $mergedWords"))
+  }
 
   def buildMergeList(tweets: List[TweetWord]) = {
     tweets map {
-      case TweetWord(s, word, count, text, history) => WordMerger.MergedWord(s, word, count, text, history.head.updated)
+      case TweetWord(s, word, count, text, history) => WordMerger.MergedWord(s, word, count, text, history.head)
     }
   }
 

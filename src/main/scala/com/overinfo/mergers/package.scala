@@ -3,7 +3,7 @@ package com.overinfo
 import scala.concurrent.{ExecutionContext, Future}
 import com.overinfo.models._
 import com.mongodb.casbah.Imports._
-import com.overinfo.models.WordsModel.{Updated, TweetWord}
+import com.overinfo.models.WordsModel.TweetWord
 import org.joda.time.DateTime
 import com.mongodb.casbah.commons.conversions.scala.RegisterJodaTimeConversionHelpers
 import java.util.Date
@@ -23,10 +23,7 @@ package object mergers {
             dbo.getAs[String]("word").get,
             dbo.getAs[Int]("count").get,
             dbo.getAs[String]("text").get,
-            dbo.getAs[MongoDBList]("history").getOrElse(MongoDBList()).map(_.asInstanceOf[DBObject]).map {
-              d =>
-                Updated(new DateTime(d.getAs[Date]("updated").getOrElse(new Date)))
-            }.toList
+            dbo.getAs[MongoDBList]("history").getOrElse(MongoDBList()).map(_.asInstanceOf[DateTime]).toList
           )
       }.toList)
     }

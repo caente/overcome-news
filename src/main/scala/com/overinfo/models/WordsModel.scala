@@ -14,9 +14,7 @@ import com.overinfo.mergers.WordMerger.MergedWord
  */
 object WordsModel {
 
-  case class Updated(updated:DateTime)
-
-  case class TweetWord(source: SourcesModel.Source, word: String, count: Int, text: String, history: List[Updated]){
+  case class TweetWord(source: SourcesModel.Source, word: String, count: Int, text: String, history: List[DateTime]){
     override def equals(obj: scala.Any): Boolean = obj match {
       case w:MergedWord => w.word == this.word
       case t:TweetWord => t.word == this.word
@@ -29,7 +27,7 @@ object WordsModel {
   RegisterJodaTimeConversionHelpers()
 
   def upsertWord(tweet: TwitterSampler.Tweet, item: TwitterSampler.Item) = {
-    val update = $set("text" -> tweet.text) ++ $push("history" -> MongoDBObject("updated" -> DateTime.now)) ++ $inc("count" -> item.count)
+    val update = $set("text" -> tweet.text) ++ $push("history" -> DateTime.now) ++ $inc("count" -> item.count)
     db("words").update(
       MongoDBObject("source" -> tweet.origin, "word" -> item.item),
       update,
@@ -45,42 +43,9 @@ object WordsModel {
           dbo.getAs[String]("word").get,
           dbo.getAs[Int]("count").get,
           dbo.getAs[String]("word").get,
-          dbo.getAs[List[Updated]]("history").get
+          dbo.getAs[List[DateTime]]("history").get
         )
     }.toStream
-  }
-
-
-  def getWordsSources(sources: List[Long], n: Int): Future[Stream[TweetWord]] = {
-    implicit def mergeStreams(t1: Stream[TweetWord]) = new {
-
-      implicit def joinTweet(tweet: TweetWord) = new {
-
-        def isNewer(otherTweet: TweetWord): Boolean = ??? //tweet.updated.compareTo(otherTweet.updated) >= 0
-
-        def sum(otherTweet: TweetWord): TweetWord = {
-          val newerTweet = if (isNewer(otherTweet)) tweet else otherTweet
-          TweetWord(
-            tweet.source,
-            tweet.word,
-            tweet.count + otherTweet.count,
-            newerTweet.text,
-            newerTweet.history
-          )
-        }
-      }
-
-      def mergeWith(t2: Stream[TweetWord]): Stream[TweetWord] = ???
-
-
-    }
-    def merge(tweets: List[Stream[TweetWord]], acc: Stream[TweetWord] = Stream.empty[TweetWord]): Stream[TweetWord] =
-      tweets match {
-        case Nil => acc
-        case t :: ts => merge(ts, acc.mergeWith(t))
-      }
-    val wordsFuture = Future.traverse(sources)(source => getWordsSource(source, n))
-    wordsFuture.map(streams => merge(streams))
   }
 
 
