@@ -4,6 +4,8 @@ import twitter4j.User
 import com.mongodb.casbah.Imports._
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
+import spray.json._
+import DefaultJsonProtocol._
 
 /**
  * Created: Miguel A. Iglesias
@@ -11,7 +13,12 @@ import scala.concurrent.ExecutionContext.Implicits.global
  */
 object SourcesModel {
 
-  case class  Source(name: String, image_url: String, screen_name: String, twitter_id: Long)
+  case class Source(name: String, image_url: String, screen_name: String, twitter_id: Long)
+
+  case class SourcesList(sources: List[Source])
+
+  implicit val sourceProtocol = jsonFormat4(Source)
+  implicit val sourcesListProtocol = jsonFormat1(SourcesList)
 
   def updateSources(sources: List[User]): Future[List[Long]] = Future {
     sources map {
@@ -25,6 +32,16 @@ object SourcesModel {
         source.getId
     }
   }
+
+  def getSources: SourcesList = SourcesList(db("sources").find().map {
+    dbo =>
+      Source(
+        dbo.getAs[String]("name").getOrElse(""),
+        dbo.getAs[String]("image_url").getOrElse(""),
+        dbo.getAs[String]("screen_name").getOrElse(""),
+        dbo.getAs[Long]("_id").getOrElse(0L)
+      )
+  }.toList)
 
   def getSource(_id: Long): Option[Source] = db("sources").findOne(MongoDBObject("_id" -> _id)).map {
     dbo =>

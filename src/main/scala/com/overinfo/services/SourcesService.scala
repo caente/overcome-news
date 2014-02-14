@@ -3,6 +3,8 @@ package com.overinfo.services
 import spray.routing.HttpService
 import akka.actor.Actor
 import spray.http.MediaTypes._
+import com.overinfo.models.SourcesModel
+import com.overinfo.mergers.WordsMerger.Sources
 
 /**
  * Created: Miguel A. Iglesias
@@ -16,27 +18,27 @@ class SourcesService extends Actor with SourcesRoutes {
   // this actor only runs our route, but you could add
   // other things here, like request stream processing
   // or timeout handling
-  def receive = runRoute(myRoute)
+  def receive = runRoute(sourcesRoute)
 }
 
 trait SourcesRoutes extends HttpService {
-  val myRoute =
-    path("") {
-      get {
-        respondWithMediaType(`text/html`) {
-          // XML is marshalled to `text/xml` by default, so we simply override here
-          complete {
-            <html>
-              <body>
-                <h1>Say hello to
-                  <i>spray-routing</i>
-                  on
-                  <i>spray-can</i>
-                  !</h1>
-              </body>
-            </html>
-          }
+  import SourcesModel._
+  import spray.httpx.SprayJsonSupport._
+  import spray.httpx.marshalling._
+  import spray.json._
+
+
+
+  val sourcesRoute = respondWithHeaders(corsHeaders: _*) {
+    options {
+      complete("ok")
+    } ~
+      path("sources") {
+        get {
+          complete(getSources)
         }
       }
-    }
+  }
+
+
 }
