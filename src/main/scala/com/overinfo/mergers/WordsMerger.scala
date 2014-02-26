@@ -2,7 +2,7 @@ package com.overinfo.mergers
 
 import akka.actor.{Actor, ActorRef}
 import org.joda.time.DateTime
-import scala.concurrent.{Future, ExecutionContext}
+import scala.concurrent._
 import com.overinfo.models._
 import com.mongodb.casbah.Imports._
 import java.util.Date
@@ -10,6 +10,7 @@ import akka.pattern.pipe
 import akka.event.LoggingReceive
 import spray.json._
 import DefaultJsonProtocol._
+import scala.Some
 
 /**
  * Created: Miguel A. Iglesias
@@ -50,7 +51,22 @@ object WordsMerger {
 
   case class WorkingOn(sources: Int)
 
+  import scala.concurrent.duration._
+
+  def delay(t: Duration)(block: => Unit) = Future {
+    blocking {
+      Thread.sleep(t.toMillis)
+    }
+  } onComplete(_ => block)
+
+
+  val msg = "message"
+
+  def send_message(msg:String) = println(msg)
+
+  while (true) delay(1 second)(send_message(msg))
 }
+
 
 import com.overinfo.mergers.WordsMerger._
 
