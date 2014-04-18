@@ -23,6 +23,6 @@ object Boot extends App {
 //      accountStream ! TwitterStreamer.Start(twitterAccount)
 //  }
   // start a new HTTP server on port 8080 with our service actor as the handler
-  IO(Http) ! Http.Bind(serviceWords, interface = "localhost", port = 3000)
-  IO(Http) ! Http.Bind(serviceSources, interface = "localhost", port = 3000)
+  IO(Http) ! Http.Bind(serviceWords, interface = "localhost", port = 8081)
+  IO(Http) ! Http.Bind(serviceSources, interface = "localhost", port = 8081)
 }

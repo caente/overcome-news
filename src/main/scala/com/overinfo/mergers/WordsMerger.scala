@@ -11,7 +11,7 @@ import akka.event.LoggingReceive
 import spray.json._
 import DefaultJsonProtocol._
 import scala.Some
-
+import scala.concurrent.ExecutionContext.Implicits.global
 /**
  * Created: Miguel A. Iglesias
  * Date: 2/1/14
@@ -59,12 +59,6 @@ object WordsMerger {
     }
   } onComplete(_ => block)
 
-
-  val msg = "message"
-
-  def send_message(msg:String) = println(msg)
-
-  while (true) delay(1 second)(send_message(msg))
 }
 
 
