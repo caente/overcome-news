@@ -16,9 +16,9 @@ trait Sources extends HttpService {
   import SourcesModel._
 
   val sources = path("sources") {
-    parameters('limit.?) {
-      limit =>
-        complete(getSources(limit.map(_.toInt)))
+    parameters('limit.as[Int].? ,'skip.as[Int].?) {
+      (limit, skip) =>
+        complete(getSources(limit, skip))
     }
   }
 

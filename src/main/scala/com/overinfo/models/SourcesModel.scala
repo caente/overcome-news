@@ -33,7 +33,7 @@ object SourcesModel extends Persistence with Limitable {
     }
   }
 
-  def getSources(limit: Option[Int]): SourcesList = SourcesList(db("sources").find().map {
+  def getSources(limit: Option[Int], skip:Option[Int]): SourcesList = SourcesList(db("sources").find().map {
     dbo =>
       Source(
         dbo.getAs[String]("name").getOrElse(""),
@@ -41,7 +41,7 @@ object SourcesModel extends Persistence with Limitable {
         dbo.getAs[String]("screen_name").getOrElse(""),
         dbo.getAs[Long]("_id").getOrElse(0L)
       )
-  }.toList.limitOption(limit))
+  }.toList.skipOption(skip).limitOption(limit))
 
   def getSource(_id: Long): Option[Source] = db("sources").findOne(MongoDBObject("_id" -> _id)).map {
     dbo =>
