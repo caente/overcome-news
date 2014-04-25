@@ -1,3 +1,7 @@
+import sbtassembly.Plugin._
+import sbtassembly.Plugin.AssemblyKeys._
+
+
 organization := "com.overinfo"
 
 version := "0.1"
@@ -5,6 +9,12 @@ version := "0.1"
 scalaVersion := "2.10.3"
 
 name := "overcome-news"
+
+assemblySettings
+
+mainClass in (Compile, run) := Some("com.overinfo.Boot")
+
+mainClass in assembly := Some("com.overinfo.Boot")
 
 
 resolvers ++= Seq(
