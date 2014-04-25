@@ -10,7 +10,7 @@ import DefaultJsonProtocol._
  * Created: Miguel A. Iglesias
  * Date: 1/25/14
  */
-object WordsModel extends Persistence {
+object WordsModel extends Persistence with Limitable {
 
   trait Words {
 
@@ -34,22 +34,6 @@ object WordsModel extends Persistence {
 
 
   RegisterJodaTimeConversionHelpers()
-
-  implicit def toLimitOption[A](list: MongoCollection#CursorType) = new {
-    def limitOption(limit: Option[Int]): MongoCollection#CursorType = limit match {
-      case None => list
-      case Some(0) => list
-      case Some(s) => list.limit(s)
-    }
-  }
-
-  implicit def toLimitOption[A](list: List[A]) = new {
-    def limitOption(limit: Option[Int]):List[A] = limit match {
-      case None => list
-      case Some(0) => list
-      case Some(s) => list.take(s)
-    }
-  }
 
 
   def getWordsSource(source: Long, limit: Option[Int] = None): List[TweetWord] = {

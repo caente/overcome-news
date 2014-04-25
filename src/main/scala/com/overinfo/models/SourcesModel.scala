@@ -11,7 +11,7 @@ import DefaultJsonProtocol._
  * Created: Miguel A. Iglesias
  * Date: 1/24/14
  */
-object SourcesModel extends Persistence{
+object SourcesModel extends Persistence with Limitable {
 
   case class Source(name: String, image_url: String, screen_name: String, twitter_id: Long)
 
@@ -33,7 +33,7 @@ object SourcesModel extends Persistence{
     }
   }
 
-  def getSources: SourcesList = SourcesList(db("sources").find().map {
+  def getSources(limit: Option[Int]): SourcesList = SourcesList(db("sources").find().map {
     dbo =>
       Source(
         dbo.getAs[String]("name").getOrElse(""),
@@ -41,7 +41,7 @@ object SourcesModel extends Persistence{
         dbo.getAs[String]("screen_name").getOrElse(""),
         dbo.getAs[Long]("_id").getOrElse(0L)
       )
-  }.toList)
+  }.toList.limitOption(limit))
 
   def getSource(_id: Long): Option[Source] = db("sources").findOne(MongoDBObject("_id" -> _id)).map {
     dbo =>

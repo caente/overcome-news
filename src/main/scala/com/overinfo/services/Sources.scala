@@ -16,7 +16,10 @@ trait Sources extends HttpService {
   import SourcesModel._
 
   val sources = path("sources") {
-    complete(getSources)
+    parameters('limit.?) {
+      limit =>
+        complete(getSources(limit.map(_.toInt)))
+    }
   }
 
   val source = path("sources" / LongNumber) {
@@ -24,7 +27,7 @@ trait Sources extends HttpService {
       complete(getSource(source_id))
   }
 
-  val sources_get = get{
+  val sources_get = get {
     source ~ sources
   }
 }
