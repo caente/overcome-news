@@ -11,7 +11,7 @@ import DefaultJsonProtocol._
  * Created: Miguel A. Iglesias
  * Date: 1/24/14
  */
-object SourcesModel {
+object SourcesModel extends Persistence{
 
   case class Source(name: String, image_url: String, screen_name: String, twitter_id: Long)
 
