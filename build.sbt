@@ -26,7 +26,7 @@ libraryDependencies ++= {
     "org.twitter4j" % "twitter4j-core" % twitterV,
     "org.twitter4j" % "twitter4j-stream" % twitterV,
     "org.specs2" %% "specs2" % "2.3.11" % "test",
-    "org.scalatest" % "scalatest_2.11" % "2.1.3" % "test",
+    "org.scalatest" % "scalatest_2.10" % "2.1.3" % "test",
     "com.netflix.rxjava" % "rxjava-scala" % "0.18.1",
     "org.mongodb" %% "casbah" % "2.7.1-SNAPSHOT",
     "io.spray" %%  "spray-json" % "1.2.6"

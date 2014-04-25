@@ -17,13 +17,18 @@ class OvercomeService extends Actor with OvercomeRoutes {
 
 trait OvercomeRoutes extends HttpService with Sources with Words {
 
+  import Headers._
+
+  val options_request = options {
+    complete("ok")
+  }
+
   val sourcesRoute =
-    get {
-      sources_get
-    } ~
-      post {
-        words
-      }
+    respondWithHeaders(corsHeaders: _*) {
+      options_request ~
+        sources_get ~
+        words_intersect
+    }
 
 
 }

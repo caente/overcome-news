@@ -1,11 +1,9 @@
 package com.overinfo.services
 
-import com.overinfo.models.SourcesModel
 import spray.httpx.SprayJsonSupport._
 import spray.httpx.marshalling._
 import spray.httpx.unmarshalling._
 import spray.json._
-import shapeless.get
 import spray.routing.HttpService
 import com.overinfo.models.SourcesModel
 
@@ -26,5 +24,7 @@ trait Sources extends HttpService {
       complete(getSource(source_id))
   }
 
-  val sources_get = source ~ sources
+  val sources_get = get{
+    source ~ sources
+  }
 }
