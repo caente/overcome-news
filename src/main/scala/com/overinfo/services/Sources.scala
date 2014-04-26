@@ -4,6 +4,7 @@ import spray.httpx.SprayJsonSupport._
 import spray.httpx.marshalling._
 import spray.httpx.unmarshalling._
 import spray.json._
+import DefaultJsonProtocol._
 import spray.routing.HttpService
 import com.overinfo.models.SourcesModel
 
