@@ -44,7 +44,7 @@ object WordsModel extends Persistence with Limitable {
           SourcesModel.getSource(source).get,
           dbo.getAs[String]("word").get,
           dbo.getAs[Int]("count").get,
-          dbo.getAs[String]("text").get,
+          dbo.getAs[String]("text").getOrElse(""),
           dbo.getAs[DateTime]("last_update").get
         )
     }.toList
