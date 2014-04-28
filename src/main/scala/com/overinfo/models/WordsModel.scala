@@ -37,7 +37,7 @@ object WordsModel extends Persistence with Limitable {
 
 
   def getWordsSource(source: Long, limit: Option[Int] = None): List[TweetWord] = {
-    db("words").find(MongoDBObject("source" -> source)).sort(MongoDBObject("last_update" -> 1)).limitOption(limit).map {
+    db("words").find(MongoDBObject("source" -> source)).sort(MongoDBObject("history" -> -1)).limitOption(limit).map {
       dbo =>
         TweetWord(
           dbo.get("_id").toString,
