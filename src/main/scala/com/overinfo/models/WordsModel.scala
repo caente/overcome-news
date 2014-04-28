@@ -51,8 +51,8 @@ object WordsModel extends Persistence with Limitable {
   }
 
   def mergeWords(merged: List[WordMerged], words: List[TweetWord]): List[WordMerged] = {
-    merged.intersect(words).map {
-      case WordMerged(word, count) => words.find(_.word == word).map(w => WordMerged(word, count + w.count)).get
+    merged.intersect(words).flatMap {
+      case WordMerged(word, count) => words.find(_.word == word).map(w => WordMerged(word, count + w.count))
     }
   }
 
