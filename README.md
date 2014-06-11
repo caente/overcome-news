@@ -8,7 +8,7 @@ it will be possible to find out what happens when several news media are combine
 i.e.
 
 ```
- http://wheeledskylight.com:8081/words/intersect
+ POST http://wheeledskylight.com:8081/words/intersect
 ```
 
 Payload:
@@ -44,7 +44,7 @@ Response:
 Where 807095 and 5988062 are:
 
 ```
-http://wheeledskylight.com:8081/sources/6017542
+GET http://wheeledskylight.com:8081/sources/6017542
 ```
 
 ```javascript
@@ -58,7 +58,7 @@ http://wheeledskylight.com:8081/sources/6017542
 
 
 ```
-http://wheeledskylight.com:8081/sources/5988062
+GET http://wheeledskylight.com:8081/sources/5988062
 ```
 
 ```javascript
