@@ -73,7 +73,7 @@ GET http://wheeledskylight.com:8081/sources/5988062
 The list of sources can found like this:
 
 ```
-http://wheeledskylight.com:8081/sources
+GET http://wheeledskylight.com:8081/sources
 ```
 
 ```javascript
